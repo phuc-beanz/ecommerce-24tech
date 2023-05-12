@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<header class="oth-page header__area header__absolute sticky__header" id="wn__header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-7 col-lg-2">
+                <div class="logo">
+                    <a th:href="@{~/web}">
+                        <img alt="logo images" th:src="@{~/web/images/logo/24tech1.png}">
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-8 d-none d-lg-block">
+                <nav class="mainmenu__nav">
+                    <ul class="meninmenu d-flex justify-content-start">
+                        <li class="drop with--one--item"><a th:href="@{~/web}">Trang chủ</a></li>
+                        <li class="drop"><a href="#">Giới thiệu</a>
+                            <div class="megamenu mega03">
+                                <ul class="item item03">
+                                    <li class="title">Về chúng tôi</li>
+                                    <li><a th:href="@{~/web}">Giấy chứng nhận</a></li>
+                                    <li><a th:href="@{~/web}">Lịch sử phát triển</a></li>
+                                </ul>
+
+                            </div>
+                        </li>
+                        <li class="drop"><a href="#">Sản phẩm</a>
+                            <div class="megamenu mega03">
+                                <ul class="item item03">
+                                    <li class="title">Categories</li>
+                                    <li th:each="ct : ${categories}">
+                                        <a class="category" href="#">
+
+                                            <p th:text='${ct.key}'></p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="item item03">
+                                    <li class="title">Customer Favourite</li>
+                                    <li><a href="shop-grid.html">Sản phẩm bán chạy nhất</a></li>
+                                    <li><a href="shop-grid.html">Sản phẩm được yêu thích</a></li>
+                                    <li><a href="shop-grid.html">Sản phẩm khuyến nghị</a></li>
+                                    <li><a href="shop-grid.html">Sản phẩm ưu đãi</a></li>
+                                    <li><a href="shop-grid.html">Khuyến mãi</a></li>
+                                </ul>
+
+                            </div>
+                        </li>
+                        <li class="drop"><a href="#">Liên hệ</a>
+                            <div class="megamenu mega02">
+                                <ul class="item item02">
+                                    <li class="title">List contact</li>
+                                    <li><a href="shop-grid.html">Facebook: 0961145000</a></li>
+                                    <li><a href="shop-grid.html">Zalo: 0961145000</a></li>
+                                    <li><a href="shop-grid.html">Fax: 0439999999</a></li>
+                                    <li><a href="shop-grid.html">Youtube</a></li>
+                                    <li><a href="shop-grid.html">Twiter</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-8 col-sm-8 col-5 col-lg-2">
+                <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
+                    <li class="shop_search"><a class="search__active" href="#"></a></li>
+                    <li class="wishlist"><a href="#"></a></li>
+                    <li class="shopcart" th:if="${session.cart != null}" th:with="cart = ${ session.cart}">
+                        <a class="cartbox_active" href="#"><span class="product_qun"
+                                                                 th:utext="${cart.orderDetails.size()}"></span></a>
+                        <!-- Start Shopping Cart -->
+                        <div class="block-minicart minicart__active">
+                            <div class="minicart-content-wrapper">
+                                <div class="micart__close">
+                                    <span>CLOSE</span>
+                                </div>
+                                <div class="total_amount items-total d-flex justify-content-between">
+                                    <span th:utext='${cart.orderDetails.size() + " items"}'></span>
+                                    <span th:utext="${@vncurrency.format(cart.getTotalCartPrice())}"></span>
+                                </div>
+                                <div class="mini_action checkout">
+                                    <a class="checkout__btn" th:href="@{~/web/order/check-out}">Go to Checkout</a>
+                                </div>
+                                <div class="single__items">
+                                    <div class="miniproduct">
+                                        <div class="item01 d-flex mt--20" th:each="orderDetail : ${cart.orderDetails}">
+                                            <div class="thumb">
+                                                <a th:href="@{~/web/product/{id}(id=${orderDetail.product.id})}"><img
+                                                        alt="product images" th:src="${orderDetail.product.image}"></a>
+                                            </div>
+                                            <div class="content">
+                                                <h6><a th:href="@{~/web/product/{id}(id=${orderDetail.product.id})}"
+                                                       th:utext="${orderDetail.product.name}"></a></h6>
+                                                <span class="prize"
+                                                      th:utext='${@vncurrency.format(orderDetail.price)}'></span>
+                                                <div class="product_prize d-flex justify-content-between">
+                                                    <span class="qun"
+                                                          th:utext='${"Quantity: " + orderDetail.quantity}'></span>
+                                                    <ul class="d-flex justify-content-end">
+                                                        <li>
+                                                            <a th:href="@{~/web/cart/add/{id}(id=${orderDetail.product.id})}"><i
+                                                                    class="zmdi zmdi-plus"></i></a></li>
+                                                        <li>
+                                                            <a th:href="@{~/web/cart/minus/{id}(id=${orderDetail.product.id})}"><i
+                                                                    class="zmdi zmdi-minus"></i></a></li>
+                                                        <li>
+                                                            <a th:href="@{~/web/cart/delete/{id}(id=${orderDetail.product.id})}"><i
+                                                                    class="zmdi zmdi-delete"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mini_action cart">
+                                    <a class="cart__btn" href="cart.html">View and edit cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Shopping Cart -->
+                    </li>
+                    <li class="setting__bar__icon"><a class="setting__active" href="#"></a>
+                        <div class="searchbar__content setting__block">
+                            <div class="content-inner">
+                                <div class="switcher-currency" th:if="${session.customer != null}">
+                                    <strong class="label switcher-label">
+                                        <span th:utext='${session.customer.fullname}'></span>
+                                    </strong>
+                                    <div class="switcher-options">
+                                        <div class="switcher-currency-trigger">
+                                            <div class="setting__menu">
+                                                <span th:if='${session.customer != null}'><a th:href="@{~/admin}"
+                                                                                             th:if='${session.customer.role == "ROLE_ADMIN"}'>Admin Management</a></span>
+                                                <span><a th:href="@{~/web/order/history}">Order History</a></span>
+                                                <span><a th:href="@{~/web/logout_success}">Logout</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="switcher-currency" th:if="${session.customer == null}">
+                                    <div class="switcher-options">
+                                        <div class="switcher-currency-trigger">
+                                            <div class="setting__menu">
+                                                <span><a th:href="@{~/web/login}">Log In</a></span>
+                                                <span><a th:href="@{~/web/signup}">Create Account</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Start Mobile Menu -->
+        <div class="row d-none">
+            <div class="col-lg-12 d-none">
+                <nav class="mobilemenu__nav">
+                    <ul class="meninmenu">
+                        <li><a th:href="@{~/web}">Home</a></li>
+                        <li><a href="#">Pages</a>
+                            <ul>
+                                <li><a href="about.html">About Page</a></li>
+                                <li><a href="portfolio.html">Portfolio</a>
+                                    <ul>
+                                        <li><a href="portfolio.html">Portfolio</a></li>
+                                        <li><a href="portfolio-details.html">Portfolio Details</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="my-account.html">My Account</a></li>
+                                <li><a href="cart.html">Cart Page</a></li>
+                                <li><a href="checkout.html">Checkout Page</a></li>
+                                <li><a href="wishlist.html">Wishlist Page</a></li>
+                                <li><a href="error404.html">404 Page</a></li>
+                                <li><a href="faq.html">Faq Page</a></li>
+                                <li><a href="team.html">Team Page</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="shop-grid.html">Shop</a>
+                            <ul>
+                                <li><a href="shop-grid.html">Shop Grid</a></li>
+                                <li><a href="single-product.html">Single Product</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="blog.html">Blog</a>
+                            <ul>
+                                <li><a href="blog.html">Blog Page</a></li>
+                                <li><a href="blog-details.html">Blog Details</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- End Mobile Menu -->
+        <div class="mobile-menu d-block d-lg-none">
+        </div>
+        <!-- Mobile Menu -->
+    </div>
+</header>
+</html>
