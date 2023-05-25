@@ -57,10 +57,9 @@
                                             <td th:utext="${order.id}"></td>
                                             <td th:utext="${order.user.email}"></td>
                                             <td th:utext="${@vncurrency.format(order.getTotalOrderPrice())}"></td>
-                                            <td th:utext="${@dateFormat.format(order.date)}"></td>
+                                            <td th:utext="${@dateFormat.format(order.getDate())}"></td>
                                             <td th:utext="${order.paymentType}"></td>
                                             <td th:utext="${order.paymentStatus }"></td>
-
 
                                             <td>
                                                 <div class="form-button-action">

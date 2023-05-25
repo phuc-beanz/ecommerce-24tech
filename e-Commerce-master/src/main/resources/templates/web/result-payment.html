@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>24TECH</title>
+
+  <meta th:replace="~{web/fragment/library :: meta}"/>
+  <link th:replace="~{web/fragment/library :: link}"/>
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://google.com/">upgrade
+  your browser</a> to improve your experience and security.</p>
+<![endif]-->
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+
+  <!-- Header -->
+  <footer th:replace="~{web/fragment/header :: header}"></footer>
+  <!-- Search Popup -->
+  <footer th:replace="~{web/fragment/search :: #main-search}"></footer>
+
+  <!-- Bradcaump area -->
+  <div class="ht__bradcaump__area bg-image--6"></div>
+
+  <!-- Start Shop Page -->
+  <div class="page-shop-sidebar left--sidebar bg--white section-padding--lg">
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-lg-6 col-12">
+          <div class="my__account__wrapper">
+            <h3 class="account__title"
+                th:utext='${message.isEmpty() ? "Kết quả thanh toán" : "Thông báo: " + message }'></h3>
+            <ul class="list-group">
+              <li class="list-group-item " th:text='${"Mã đơn hàng: " + idorder}'></li>
+              <li class="list-group-item " th:text='${"Tổng giá trị đơn hàng: " + @vncurrency.format(amount)}'></li>
+              <li class="list-group-item ">
+                <a th:href="@{~/web/order/{id}(id=${idorder})}"
+                   th:utext='${"<u>Xem chi tiết đơn hàng tại đây</u>"}'></a>
+              </li>
+            </ul>
+            <br>
+            <h4>Cảm ơn quý khách đã tin tưởng và ủng hộ 24Tech !!!</h4>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- End Shop Page -->
+
+  <!-- Footer Area -->
+  <footer th:replace="~{web/fragment/footer :: footer}"></footer>
+</div>
+<!-- //Main wrapper -->
+
+
+<script th:replace="~{web/fragment/library :: script}"></script>
+
+</body>
+</html>

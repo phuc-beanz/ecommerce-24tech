@@ -7,6 +7,7 @@ import com.team.ecommerce.entity.User;
 import com.team.ecommerce.service.MoMoService;
 import com.team.ecommerce.service.OrderService;
 import com.team.ecommerce.service.ProductService;
+import com.team.ecommerce.service.VNPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.time.Instant;
 
@@ -28,6 +31,8 @@ public class CustomerOrderController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private VNPayService vnPayService;
     @Autowired
     private MoMoService moMoService;
 
@@ -74,7 +79,7 @@ public class CustomerOrderController {
     }
 
     @PostMapping("process")
-    public String processCheckOut(@ModelAttribute Order order, HttpSession session) {
+    public Object processCheckOut(@ModelAttribute Order order, HttpSession session) throws UnsupportedEncodingException {
         if (session.getAttribute("customer") == null)
             return "web/shop-grid";
 
@@ -92,7 +97,15 @@ public class CustomerOrderController {
         }
         session.setAttribute("cart", orderService.createShopCart(cart.getUser().getId()));
 
-        String returnUrl = moMoService.getMoMoPayUrl(cart);
-        return returnUrl == null ? "redirect:/web/order/" + cart.getId() : returnUrl;
+//        String returnUrl = moMoService.getMoMoPayUrl(cart);
+
+        String paymentUrl = vnPayService.createPayment(cart);
+        if (paymentUrl != null){
+             // Đường dẫn đến trang bên ngoài
+            RedirectView redirectView = new RedirectView(paymentUrl);
+            return redirectView;
+        }
+
+        return paymentUrl == null ? "redirect:/web/order/" + cart.getId() : paymentUrl;
     }
 }

@@ -23,6 +23,7 @@ public class OrderController {
     @RequestMapping("")
     public String manage(Model model) {
         model.addAttribute("orders", service.getAllOrder());
+
         return "admin/order/manage";
     }
 
